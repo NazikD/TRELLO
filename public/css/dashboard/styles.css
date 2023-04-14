@@ -1,0 +1,139 @@
+body{
+    background-color: #464545;
+    position: relative;
+}
+
+.container{
+    margin-top: 30px;
+    white-space: nowrap
+}
+.card{
+    margin-bottom: 20px;
+}
+
+.row{
+    flex-wrap: nowrap;
+    width: 100%;
+}
+
+.col-3{
+    padding-top: 10px;
+    background-color: #858585;
+    margin: 0 10px 0 0;
+    border-radius: 20px;
+}
+
+.card-head{
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-title{
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    padding: 5px 0;
+}
+.card-title:active{
+    border: none;
+}
+.column-close{
+    position: relative;
+    margin: auto 3px;
+	min-width: 24px;
+	min-height: 24px;
+	cursor: pointer;
+  transition: opacity ease 0.5s;
+}
+.column-close:before,
+.column-close:after {
+    z-index: 2;
+    content: "";
+    position: absolute;
+    top: 9px;
+    right: 2px;
+    width: 24px;
+    height: 4px;
+    background: gray;
+}
+.column-close:before {
+    transform: rotate(45deg);
+}
+.column-close:after {
+    transform: rotate(-45deg);
+}
+
+
+.task-title {
+    width: 100%;
+    border: 1px solid #464545;
+    border-radius: 5px;
+    overflow: auto;
+    font-weight: 500;
+    font-size: 20px;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+.task{
+    padding: 10px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    width: 100%;
+    min-height: 30px;
+    font-size: 14px;
+    margin: 10px 0;
+    background-color: #fff;
+    display: flex;
+    position: relative;
+}
+.task-close{
+    margin: auto 3px;
+	min-width: 24px;
+	min-height: 24px;
+	cursor: pointer;
+  transition: opacity ease 0.5s;
+}
+
+.task-close:before,
+.task-close:after {
+    content: "";
+    position: absolute;
+    top: 47%;
+    width: 24px;
+    height: 4px;
+    background: gray;
+}
+.task-close:before {
+    transform: rotate(45deg);
+}
+.task-close:after {
+    transform: rotate(-45deg);
+}
+
+
+.create-column{
+    position: relative;
+    top: 15px;
+    left: 5%;
+    height: 50px;
+    border-radius: 15px;
+    background-color: #727171;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.create-column:hover{
+    background-color: #6d6c6c;
+    border: 1px solid #000;
+}
+
+.create-column_text{
+    color: #fff;
+    font-size: 30px;
+    margin: 0;
+}
+
+.dropZone--hover{
+    border: 3px solid #858585;
+}
