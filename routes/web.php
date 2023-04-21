@@ -14,12 +14,14 @@ use App\Http\Controllers\DashboardController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [App\Http\Controllers\ColumnController::class, 'index'])->name('home');
+
+Route::get('/home', function () {
+    return redirect('/');
 });
 
+Route::post('/card', [App\Http\Controllers\CardController::class, 'create']);
+
+Route::post('/column', [App\Http\Controllers\ColumnController::class, 'create']);
+
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');

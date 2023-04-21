@@ -7,28 +7,57 @@ var text = document.querySelector(".task-text");
 $(document).ready(function () {
 
     /* Change-Title */
-    function changeTitle() {
-        const titlesColumn = document.querySelectorAll('.card-title');
-        titlesColumn.forEach( title => {
-            title.addEventListener('click', e=>e.target.textContent = '')
-        });
-    }
+    // function changeTitle() {
+    //     const titlesColumn = document.querySelectorAll('.card-title');
+    //     titlesColumn.forEach( title => {
+    //         title.addEventListener('click', e=>e.target.textContent = '')
+    //     });
+    // }
 
     /* Create-column */
 
     $(document).on("click", ".create-column", function () {
-        var i=1;
-        $(".tasks-column").each(function(){
-            i++;
+
+        var nameColumn = $('#name-column').val();
+        if(nameColumn){
+
+            var i=1;
+            $(".tasks-column").each(function(){
+                i++;
+            });
+
+            var column = $("<div class='col-3 tasks-column dropZone' id='" + i + "'><div class='card'><div class='card-body'><h5 class='card-title' contenteditable='true'>" + nameColumn + "<div class='column-close'></div></h5><p class='card-text'><input class='task-title' id='create-title' type='text' value='' placeholder='Add Task' data-value='" + i + "'></p></div><a href='#' class='btn btn-primary add-card' data-column='" + i + "'>Add card</a></div></div></div><input type='hidden' class='column-id' data-column='"+ i +"'>")
+
+            $('.body-column').append(column);
+
+            $('#name-column').val('');
+
+            var idColumn = $('.tasks-column').attr('id');
+
+        $.ajaxSetup({
+            headers: {
+               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+         });
+
+        $.ajax({
+            method: "POST",
+            url: "/column",
+            data: {column: idColumn, title: nameColumn},
         })
-        $('.row').append("<div class='col-3 tasks-column dropZone' id=' " + i + "'><div class='card'><div class='card-body'><div class='card-head'><h5 class='card-title' contenteditable = 'true'>Need to do</h5><div class='column-close'></div></div></div></div>")
 
-    changeTitle();
+        $('#name-column').removeAttr('class','errors')
+        }
+        else if(!nameColumn){
+            $('#name-column').attr('class','errors')
+        }
 
-        /* Drag and Drop */
+    // changeTitle();
 
-        const dragItems = document.querySelectorAll('.dragItem');
-        const dropZones = document.querySelectorAll('.dropZone');
+    /* Drag and Drop */
+
+    const dragItems = document.querySelectorAll('.dragItem');
+    const dropZones = document.querySelectorAll('.dropZone');
 
         dragItems.forEach(dragItem => {
             dragItem.addEventListener('dragstart', handlerDragstart);
@@ -79,31 +108,31 @@ $(document).ready(function () {
     /* Create-card */
 
     $(document).on("click", ".add-card", function () {
-        var taskCard = document.createElement("div");
-        taskCard.classList.add('task', 'dragItem');
-        taskCard.setAttribute("draggable", "true");
 
-        var i=1;
-        $(".task").each(function(){
-            i++;
+        var column = $(this).data('column');
+        var value = $(this).data('value');
+
+        var $column = $('.tasks-column#'+column);
+
+        var $task = $("<div class='task dragItem' draggable='true'><p class='task-title'>" + $column.find('.task-title[data-value="'+value+'"]').val() + "<div class='task-close'></div></p><input type='hidden' value='"+ value +"'></div>");
+        $column.append($task);
+
+        $(this).data('value', value + 1);
+
+        $.ajaxSetup({
+            headers: {
+               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+         });
+
+        var taskValue = $('.task-title').val();
+        var idColumn = $('.column-id').attr('value')
+
+        $.ajax({
+            method: "POST",
+            url: "/card",
+            data: {title: taskValue, columnId: idColumn},
         })
-        taskCard.setAttribute("data-item", i);
-
-        var taskTitle = document.createElement("p");
-        taskTitle.classList.add('task-title');
-        taskTitle.innerHTML = title.value;
-
-        var taskClose = document.createElement('div');
-        taskClose.classList.add('task-close');
-
-        if(title.value){
-            tasksColumn.append(taskCard);
-            taskCard.appendChild(taskTitle);
-            taskTitle.appendChild(taskClose);
-        }
-
-        title.value = "";
-
     })
 
     /*Column-close */

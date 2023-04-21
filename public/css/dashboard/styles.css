@@ -4,11 +4,15 @@ body{
 }
 
 .container{
-    margin-top: 30px;
     white-space: nowrap
 }
 .card{
     margin-bottom: 20px;
+}
+
+.errors{
+    border: 1px solid #df0101;
+    padding: 1px;
 }
 
 .row{
@@ -73,6 +77,7 @@ body{
     font-size: 20px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     position: relative;
 }
 .task{
@@ -88,9 +93,9 @@ body{
     position: relative;
 }
 .task-close{
-    margin: auto 3px;
+    /* margin: auto 3px; */
 	min-width: 24px;
-	min-height: 24px;
+	min-height: 12px;
 	cursor: pointer;
   transition: opacity ease 0.5s;
 }
@@ -111,17 +116,24 @@ body{
     transform: rotate(-45deg);
 }
 
+.name-column{
+    width: 500px;
+    margin: 10px 0 0 200px;
+    color: #fff;
+}
 
 .create-column{
     position: relative;
-    top: 15px;
+    /* top: 15px; */
     left: 5%;
     height: 50px;
     border-radius: 15px;
     background-color: #727171;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-bottom: 20px;
 }
 .create-column:hover{
     background-color: #6d6c6c;
