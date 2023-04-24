@@ -22,8 +22,8 @@ class CardRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string',
-            'columnId' => 'required|string',
+            'title' => 'required|max:255',
+            'column_id' => 'required|numeric',
         ];
     }
 }

@@ -40,5 +40,6 @@ class ColumnController extends Controller
         $columns = $user->columns()->create([
             'title' => $request->title
         ]);
+        return $columns;
     }
 }

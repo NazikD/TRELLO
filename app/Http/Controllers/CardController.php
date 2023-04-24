@@ -30,12 +30,14 @@ class CardController extends Controller
     public function create(CardRequest $request)
     {
         $user = auth()->user();
-        $cards = $user->columns()
-            ->find($request->columnId)
+        $card = $user->columns()
+            ->find($request->column_id)
             ->cards()
             ->create([
-            'title' => $request->title
-        ]);
+                'title' => $request->title,
+                'user_id' => $user['id'],
+            ]);
 
+        return $card;
     }
 }

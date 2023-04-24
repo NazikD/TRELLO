@@ -1,11 +1,9 @@
-let tasksColumn = document.querySelector('.tasks-column');
+let tasksColumn = document.querySelector(".tasks-column");
 let button = document.querySelector(".add-card");
 var title = document.querySelector(".task-title");
 var text = document.querySelector(".task-text");
 
-
 $(document).ready(function () {
-
     /* Change-Title */
     // function changeTitle() {
     //     const titlesColumn = document.querySelectorAll('.card-title');
@@ -17,80 +15,86 @@ $(document).ready(function () {
     /* Create-column */
 
     $(document).on("click", ".create-column", function () {
-
-        var nameColumn = $('#name-column').val();
-        if(nameColumn){
-
-            var i=1;
-            $(".tasks-column").each(function(){
-                i++;
+        var nameColumn = $("#name-column").val();
+        var idColumn = $(".tasks-column").attr("id");
+        if (nameColumn) {
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
             });
 
-            var column = $("<div class='col-3 tasks-column dropZone' id='" + i + "'><div class='card'><div class='card-body'><h5 class='card-title' contenteditable='true'>" + nameColumn + "<div class='column-close'></div></h5><p class='card-text'><input class='task-title' id='create-title' type='text' value='' placeholder='Add Task' data-value='" + i + "'></p></div><a href='#' class='btn btn-primary add-card' data-column='" + i + "'>Add card</a></div></div></div><input type='hidden' class='column-id' data-column='"+ i +"'>")
+            $.ajax({
+                method: "POST",
+                url: "/column",
+                data: { column: idColumn, title: nameColumn },
+            }).then((res) => {
+                var column = $(
+                    "<div class='col-3 tasks-column dropZone' id='" +
+                        res.id +
+                        "'><div class='card'><div class='card-body'><h5 class='card-title' contenteditable='true'>" +
+                        res.title +
+                        "<div class='column-close'></div></h5><p class='card-text'><input class='task-title' id='create-title' type='text' value='' placeholder='Add Task' data-value='" +
+                        res.id +
+                        "'></p></div><a href='#' class='btn btn-primary add-card' data-column='" +
+                        res.id +
+                        "' data-value='" +
+                        res.id +
+                        "'>Add card</a></div><input type='hidden' class='column-id' data-column='" +
+                        res.id +
+                        "' value='" +
+                        res.id +
+                        "'></div>"
+                );
 
-            $('.body-column').append(column);
-
-            $('#name-column').val('');
-
-            var idColumn = $('.tasks-column').attr('id');
-
-        $.ajaxSetup({
-            headers: {
-               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-         });
-
-        $.ajax({
-            method: "POST",
-            url: "/column",
-            data: {column: idColumn, title: nameColumn},
-        })
-
-        $('#name-column').removeAttr('class','errors')
+                $(".body-column").append(column);
+                $("#name-column").val("");
+                $("#name-column").removeAttr("class", "errors");
+            });
+        } else if (!nameColumn) {
+            $("#name-column").attr("class", "errors");
         }
-        else if(!nameColumn){
-            $('#name-column').attr('class','errors')
-        }
 
-    // changeTitle();
+        // changeTitle();
 
-    /* Drag and Drop */
+        /* Drag and Drop */
 
-    const dragItems = document.querySelectorAll('.dragItem');
-    const dropZones = document.querySelectorAll('.dropZone');
+        const dragItems = document.querySelectorAll(".dragItem");
+        const dropZones = document.querySelectorAll(".dropZone");
 
-        dragItems.forEach(dragItem => {
-            dragItem.addEventListener('dragstart', handlerDragstart);
-            dragItem.addEventListener('dragend', handlerDragend);
-            dragItem.addEventListener('drag', handlerDrag);
+        dragItems.forEach((dragItem) => {
+            dragItem.addEventListener("dragstart", handlerDragstart);
+            dragItem.addEventListener("dragend", handlerDragend);
+            dragItem.addEventListener("drag", handlerDrag);
         });
 
-        dropZones.forEach(dropZone => {
-            dropZone.addEventListener('dragenter', handlerDragenter);
-            dropZone.addEventListener('dragleave', handlerDragleave);
-            dropZone.addEventListener('dragover', handlerDragover);
-            dropZone.addEventListener('drop', handlerDrop);
+        dropZones.forEach((dropZone) => {
+            dropZone.addEventListener("dragenter", handlerDragenter);
+            dropZone.addEventListener("dragleave", handlerDragleave);
+            dropZone.addEventListener("dragover", handlerDragover);
+            dropZone.addEventListener("drop", handlerDrop);
         });
 
-        function handlerDragstart (event){
+        function handlerDragstart(event) {
             event.dataTransfer.setData("dragItem", this.dataset.item);
-            this.classList.add('dropZone--hover');
+            this.classList.add("dropZone--hover");
         }
 
         function handlerDragend(event) {
-            this.classList.remove('dropZone--hover');
+            this.classList.remove("dropZone--hover");
         }
 
-        function handlerDrag(event) {
-        }
+        function handlerDrag(event) {}
 
         function handlerDragenter(event) {
             event.preventDefault();
-            this.classList.add('dropZone--hover');
+            this.classList.add("dropZone--hover");
         }
 
         function handlerDragleave(event) {
-            this.classList.remove('dropZone--hover');
+            this.classList.remove("dropZone--hover");
         }
 
         function handlerDragover(event) {
@@ -98,52 +102,54 @@ $(document).ready(function () {
         }
 
         function handlerDrop(event) {
-            const dragFlag = event.dataTransfer.getData("dragItem")
-            const dragItem = document.querySelector(`[data-item="${dragFlag}"]`)
+            const dragFlag = event.dataTransfer.getData("dragItem");
+            const dragItem = document.querySelector(
+                `[data-item="${dragFlag}"]`
+            );
             this.append(dragItem);
         }
-
-    })
+    });
 
     /* Create-card */
 
     $(document).on("click", ".add-card", function () {
-
-        var column = $(this).data('column');
-        var value = $(this).data('value');
-
-        var $column = $('.tasks-column#'+column);
-
-        var $task = $("<div class='task dragItem' draggable='true'><p class='task-title'>" + $column.find('.task-title[data-value="'+value+'"]').val() + "<div class='task-close'></div></p><input type='hidden' value='"+ value +"'></div>");
-        $column.append($task);
-
-        $(this).data('value', value + 1);
+        var column = $(this).data("column");
+        var value = $(this).data("value");
+        var $column = $(".tasks-column#" + column);
 
         $.ajaxSetup({
             headers: {
-               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-         });
-
-        var taskValue = $('.task-title').val();
-        var idColumn = $('.column-id').attr('value')
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+        });
+        var taskValue = $(".task-title").val();
+        var idColumn = $(".column-id").attr("value");
 
         $.ajax({
             method: "POST",
             url: "/card",
-            data: {title: taskValue, columnId: idColumn},
-        })
-    })
+            data: { title: taskValue, column_id: idColumn },
+        }).then((res) => {
+            var $task = $(
+                "<div class='task dragItem' draggable='true'><p class='task-title'>" +
+                    res.title +
+                    "<div class='task-close'></div></p><input type='hidden' value='" +
+                    res.id +
+                    "'></div>"
+            );
+            $column.append($task);
+        });
+    });
 
     /*Column-close */
 
     $(document).on("click", ".column-close", function () {
         $(".tasks-column:hover").remove();
-    })
+    });
 
     /*Card-close */
 
     $(document).on("click", ".task-close", function () {
         $(".task:hover").remove();
-    })
-})
+    });
+});
