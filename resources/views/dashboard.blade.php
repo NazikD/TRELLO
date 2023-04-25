@@ -37,7 +37,7 @@
                     <a href="#" class="btn btn-primary add-card" data-column="{{ $column->id }}"
                         data-value="{{ $column->id }}">Add card</a>
                 </div>
-                <input type="hidden" class="column-id" value="{{ $column->id }}">
+                <input type="hidden" class="column-id" valueу="{{ $column->id }}">
 
                 @foreach ($column->cards as $card)
                 <div class='task dragItem' draggable='true'>

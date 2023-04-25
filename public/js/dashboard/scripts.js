@@ -116,15 +116,15 @@ $(document).ready(function () {
         var column = $(this).data("column");
         var value = $(this).data("value");
         var $column = $(".tasks-column#" + column);
+        var taskValue = $(".task-title[data-value='" + value + "']").val();
+        var idColumn = $(".task-title[data-value='" + value + "']").data("value");
 
         $.ajaxSetup({
             headers: {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
             },
         });
-        var taskValue = $(".task-title").val();
-        var idColumn = $(".column-id").attr("value");
-
+        console.log(taskValue);
         $.ajax({
             method: "POST",
             url: "/card",
