@@ -7,13 +7,18 @@ body{
     white-space: nowrap
 }
 .card{
-    margin-bottom: 20px;
+    padding: 5px;
 }
 
 .errors{
-    border: 1px solid #df0101;
-    padding: 1px;
+    color: #df0101;
+    display: none;
+    font-size: 15px;
 }
+
+/* .accordion-button:active .add-card {
+    color: black;
+  } */
 
 .row{
     flex-wrap: nowrap;
@@ -21,10 +26,10 @@ body{
 }
 
 .col-3{
-    padding-top: 10px;
-    background-color: #858585;
-    margin: 0 10px 0 0;
+    background-color: #bbbbbb;
     border-radius: 20px;
+    padding: 15px;
+    margin: 0 15px 0 0;
 }
 
 .card-head{
@@ -32,12 +37,24 @@ body{
     justify-content: space-between;
 }
 
+.add-card{
+    font-size: 20px;
+    color: #000;
+}
+
 .card-title{
     display: flex;
     justify-content: space-between;
     position: relative;
     padding: 5px 0;
+    margin: 5px 0;
+
 }
+
+.card-text{
+    display: flex;
+}
+
 .card-title:active{
     border: none;
 }
@@ -47,7 +64,7 @@ body{
 	min-width: 24px;
 	min-height: 24px;
 	cursor: pointer;
-  transition: opacity ease 0.5s;
+    transition: opacity ease 0.5s;
 }
 .column-close:before,
 .column-close:after {
@@ -68,8 +85,28 @@ body{
 }
 
 
+.card-body{
+    /* display: none; */
+    width: 100%;
+    height: 100%;
+    padding: 0;
+}
+
+.card-body-modal{
+    background-color: #fefefe;
+}
+
+.accordion-button::after {
+    display: none !important;
+  }
+  
+  .accordion-button:not(.collapsed)::after {
+    display: none !important;
+  }
+
 .task-title {
     width: 100%;
+    margin-right: 5px;
     border: 1px solid #464545;
     border-radius: 5px;
     overflow: auto;
@@ -93,11 +130,10 @@ body{
     position: relative;
 }
 .task-close{
-    /* margin: auto 3px; */
 	min-width: 24px;
 	min-height: 12px;
 	cursor: pointer;
-  transition: opacity ease 0.5s;
+    transition: opacity ease 0.5s;
 }
 
 .task-close:before,
@@ -116,16 +152,7 @@ body{
     transform: rotate(-45deg);
 }
 
-.name-column{
-    width: 500px;
-    margin: 10px 0 0 200px;
-    color: #fff;
-}
-
 .create-column{
-    position: relative;
-    /* top: 15px; */
-    left: 5%;
     height: 50px;
     border-radius: 15px;
     background-color: #727171;
@@ -149,3 +176,49 @@ body{
 .dropZone--hover{
     border: 3px solid #858585;
 }
+
+/* Modal */
+
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+  }
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 500px;
+    height: 300px;
+    position: relative;
+  }
+  .modal-content-body{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 40px 0;
+  }
+  .close {
+    position: absolute;
+    color: #aaa;
+    top: 10px;
+    right: 30px;
+    font-size: 30px;
+    font-weight: bold;
+  }
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }

@@ -12,9 +12,45 @@ $(document).ready(function () {
     //     });
     // }
 
+    /* Modal-card */
+
+    // var btnCard = $("#cardBtn");
+    // var modalCard = $(".card-body");
+
+    // $(btnCard).click(function(){
+    //     modalCard.css("display", "block");
+    //     $(modalCard).animate({top: "0"}, "slow");
+    // })
+
     /* Create-column */
 
-    $(document).on("click", ".create-column", function () {
+    /* Modal-column */
+
+    var modal = $("#myModal");
+    var btn = $("#myBtn");
+    var span = $(".close")[0];
+
+    btn.click(function () {
+        modal.css("display", "block");
+    });
+
+    $(span).click(function () {
+        modal.css("display", "none");
+        // $("#myModal").animate({top: "-100%"}, "slow", function() {
+        //     modal.style.display = "none";
+        //   });
+    });
+
+    $(window).click(function (event) {
+        if (event.target == modal[0]) {
+            modal.css("display", "none");
+        }
+        // $("#myModal").animate({top: "-100%"}, "slow", function() {
+        //     modal.style.display = "none";
+        //   });
+    });
+
+    $(document).on("click", ".add-column", function () {
         var nameColumn = $("#name-column").val();
         var idColumn = $(".tasks-column").attr("id");
         if (nameColumn) {
@@ -34,15 +70,19 @@ $(document).ready(function () {
                 var column = $(
                     "<div class='col-3 tasks-column dropZone' id='" +
                         res.id +
-                        "'><div class='card'><div class='card-body'><h5 class='card-title' contenteditable='true'>" +
+                        "'><div class='card'><h5 class='card-title' contenteditable='true'>" +
                         res.title +
-                        "<div class='column-close'></div></h5><p class='card-text'><input class='task-title' id='create-title' type='text' value='' placeholder='Add Task' data-value='" +
+                        "</h5><div class='accordion accordion-flush' id='accordionFlushExample'><div class='accordion-item'><h2 class='accordion-header'><button class='accordion-button collapsed bg-secondary' type='button' data-bs-toggle='collapse' data-bs-target='#flush-collapseOne' aria-expanded='false' aria-controls='flush-collapseOne'><div class='add-card' data-column='" +
                         res.id +
-                        "'></p></div><a href='#' class='btn btn-primary add-card' data-column='" +
+                        "'data-value='" +
                         res.id +
-                        "' data-value='" +
+                        "'>Add card</div></button></h2><div id='flush-collapseOne' class='accordion-collapse collapse' data-bs-parent='#accordionFlushExample'><div class='accordion-body'><div class='card-body'><div class='card-body-modal'><p class='card-text'><input class='task-title' id='create-title' type='text' value='' placeholder='Add Task' data-value='" +
                         res.id +
-                        "'>Add card</a></div><input type='hidden' class='column-id' data-column='" +
+                        "'><button class='btn btn-dark create-card' data-column='" +
+                        res.id +
+                        "'data-value='" +
+                        res.id +
+                        "'>Create</button></p></div></div></div></div></div></div></div><input type='hidden' class='column-id' data-column='" +
                         res.id +
                         "' value='" +
                         res.id +
@@ -51,10 +91,11 @@ $(document).ready(function () {
 
                 $(".body-column").append(column);
                 $("#name-column").val("");
-                $("#name-column").removeAttr("class", "errors");
+                $('.errors').css("display", "none");
+                modal.css("display", "none");
             });
         } else if (!nameColumn) {
-            $("#name-column").attr("class", "errors");
+            $('.errors').css("display", "block");
         }
 
         // changeTitle();
@@ -112,19 +153,27 @@ $(document).ready(function () {
 
     /* Create-card */
 
-    $(document).on("click", ".add-card", function () {
-        var column = $(this).data("column");
+    $(document).on("click", ".create-card", function () {
+        // var column = $(".add-card").data("column");
+        var column = $(".column-id").attr("value");
+        console.log("column: " + column);
         var value = $(this).data("value");
-        var $column = $(".tasks-column#" + column);
+        var $column = $('.tasks-column-' + column);
         var taskValue = $(".task-title[data-value='" + value + "']").val();
-        var idColumn = $(".task-title[data-value='" + value + "']").data("value");
+        var idColumn = $(".task-title[data-value='" + value + "']").data(
+            "value"
+        );
+        var load = $("<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>Loading...")
+
+        $(this).append(load);
+        $(this).prop("disabled", true);
 
         $.ajaxSetup({
             headers: {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
             },
         });
-        console.log(taskValue);
+
         $.ajax({
             method: "POST",
             url: "/card",
@@ -137,19 +186,25 @@ $(document).ready(function () {
                     res.id +
                     "'></div>"
             );
+            // console.log('.tasks-column-' + column);
+            // console.log('column', $column);
+            // console.log('task', $task);
             $column.append($task);
-        });
+            $(this).prop("disabled", false);
+            $('.spinner-border').remove();
+        })
+
     });
 
     /*Column-close */
 
-    $(document).on("click", ".column-close", function () {
-        $(".tasks-column:hover").remove();
-    });
+    // $(document).on("click", ".column-close", function () {
+    //     $(".tasks-column:hover").remove();
+    // });
 
     /*Card-close */
 
-    $(document).on("click", ".task-close", function () {
-        $(".task:hover").remove();
-    });
+    // $(document).on("click", ".task-close", function () {
+    //     $(".task:hover").remove();
+    // });
 });
