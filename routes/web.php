@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,5 +22,9 @@ Route::get('/home', function () {
 Route::post('/card', [App\Http\Controllers\CardController::class, 'create']);
 
 Route::post('/column', [App\Http\Controllers\ColumnController::class, 'create']);
+
+Route::middleware('api')->group(function () {
+    Route::post('/cards', [App\Http\Controllers\CardController::class, 'cards']);
+});
 
 Auth::routes();

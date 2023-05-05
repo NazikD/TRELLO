@@ -40,4 +40,5 @@ class CardController extends Controller
 
         return $card;
     }
+
 }
