@@ -18,13 +18,8 @@ export default {
 
   data() {
     return {
-    //   card: null,
     };
   },
-
-//     mounted() {
-//     this.getCards();
-//   },
 
   methods: {
     // getCards() {

@@ -11,8 +11,8 @@ body{
 }
 
 .errors{
+    display: block;
     color: #df0101;
-    display: none;
     font-size: 15px;
 }
 
@@ -99,7 +99,7 @@ body{
 .accordion-button::after {
     display: none !important;
   }
-  
+
   .accordion-button:not(.collapsed)::after {
     display: none !important;
   }
@@ -181,9 +181,9 @@ body{
 
 
 .modal {
-    display: none;
     position: fixed;
-    z-index: 1;
+    display: block;
+    z-index: 3;
     left: 0;
     top: 0;
     width: 100%;

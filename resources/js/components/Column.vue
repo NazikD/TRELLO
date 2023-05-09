@@ -31,13 +31,13 @@
                   <p class="card-text">
                     <input
                       class="task-title"
-                      id="create-title"
+                      id="create_title"
+                      v-model="create_title"
                       type="text"
-                      value=""
                       placeholder="Add Task"
                       :data-value="column.id"
                     />
-                    <button class="btn btn-dark create-card" :data-value="column.id">
+                    <button class="btn btn-dark create-card" :data-value="column.id" @click="addCards">
                       Create
                     </button>
                   </p>
@@ -67,6 +67,7 @@ export default {
   data() {
     return {
       columns: null,
+      create_title: null
     };
   },
 
@@ -74,16 +75,13 @@ export default {
     Card,
   },
 
-  //   mounted() {
-  //     this.getCards();
-  //   },
 
   methods: {
-    // getCards() {
-    //   axios.post("columns").then((data) => {
-    //     this.columns = data.data;
-    //   });
-    // },
+    addCards() {
+      axios.post("/card", { title: this.create_title }).then((res) => {
+        this.create_title = null;
+      });
+    },
   },
 };
 </script>
