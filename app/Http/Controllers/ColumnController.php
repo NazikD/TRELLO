@@ -31,7 +31,7 @@ class ColumnController extends Controller
         $user = auth()->user();
         $columns = $user->columns()->with('cards')->get();
 
-        return view('dashboard', compact('columns'));
+        return view('dashboard', compact('columns', 'user'));
     }
 
     public function create(ColumnRequest $request)

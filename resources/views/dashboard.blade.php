@@ -14,7 +14,7 @@
         <div class="row flex-grow-1 body-column">
 
             @foreach ($columns as $column)
-            <column :column="{{ $column }}"></column>
+            <column :column="{{ $column }}" :user="{{ $user }}"></column>
             {{-- <div class="col-3 tasks-column-{{$column->id}} dropZone" id='1'>
                 <div class="card">
                     <h5 class="card-title" contenteditable="true">{{ $column->title }}

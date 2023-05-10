@@ -24,6 +24,7 @@ class CardRequest extends FormRequest
         return [
             'title' => 'required|max:255',
             'column_id' => 'required|numeric',
+            'user_id' => 'required|numeric'
         ];
     }
 }

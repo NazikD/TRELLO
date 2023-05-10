@@ -61,7 +61,8 @@ export default {
 
   props: {
     column: Object,
-    card: Object
+    card: Object,
+    user: Object,
   },
 
   data() {
@@ -78,9 +79,10 @@ export default {
 
   methods: {
     addCards() {
-      axios.post("/card", { title: this.create_title }).then((res) => {
+      axios.post("/card", { title: this.create_title, user_id: this.user.id, column_id: this.column.id }).then((res) => {
         this.create_title = null;
       });
+      location.reload();
     },
   },
 };

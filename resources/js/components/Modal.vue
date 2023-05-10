@@ -43,9 +43,12 @@ export default {
         this.showError = true;
         return;
       }
-      if (isValid) {
+      else {
         axios.post("/column", { title: this.name }).then((res) => {
           this.name = null;
+          this.showModal = false;
+          this.$emit('close');
+          location.reload();
         });
       }
     },
