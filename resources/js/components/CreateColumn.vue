@@ -13,27 +13,11 @@
   <modal v-if="showModal" @close="showModal = false"></modal>
 </template>
 
-<script>
-import Modal from "./Modal.vue"
-export default {
-  name: "CreateColumn",
+<script setup>
+import Modal from './Modal.vue';
+import { ref } from 'vue';
 
-  data() {
-    return {
-        showModal: false,
-    };
-  },
-
-  components: {
-    Modal,
-  },
-
-  methods: {
-    addColumn() {
-      // console.log(this.nameColumn);
-    },
-  },
-};
+const showModal = ref(false);
 </script>
 
 <style scoped>

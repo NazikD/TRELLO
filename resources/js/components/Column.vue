@@ -15,7 +15,11 @@
               aria-expanded="false"
               :aria-controls="'flush-collapseOne-' + column.id"
             >
-              <div class="add-card" :data-column="column.id" :data-value="column.id">
+              <div
+                class="add-card"
+                :data-column="column.id"
+                :data-value="column.id"
+              >
                 Add card
               </div>
             </button>
@@ -37,10 +41,15 @@
                       placeholder="Add Task"
                       :data-value="column.id"
                     />
-                    <button class="btn btn-dark create-card" :data-value="column.id" @click="addCards">
+                    <button
+                      class="btn btn-dark create-card"
+                      :data-value="column.id"
+                      @click="addCards"
+                    >
                       Create
                     </button>
                   </p>
+                  <p class="errors" v-show="showError">Please enter a name</p>
                 </div>
               </div>
             </div>
@@ -49,12 +58,13 @@
       </div>
     </div>
     <input type="hidden" class="column-id" :value="column.id" />
-        <card v-for="card in column.cards" :card="card" :key="card.id"></card>
+    <card v-for="card in column.cards" :card="card" :key="card.id"></card>
   </div>
 </template>
 
 <script>
 import Card from "./Card.vue";
+import { ref } from "vue";
 
 export default {
   name: "Column",
@@ -65,25 +75,37 @@ export default {
     user: Object,
   },
 
-  data() {
-    return {
-      columns: null,
-      create_title: null
-    };
-  },
-
   components: {
     Card,
   },
 
+  setup(props) {
+    const create_title = ref(null);
+    const showError = ref(false);
 
-  methods: {
-    addCards() {
-      axios.post("/card", { title: this.create_title, user_id: this.user.id, column_id: this.column.id }).then((res) => {
-        this.create_title = null;
-      });
-      location.reload();
-    },
+    const addCards = async () => {
+      if (!create_title.value) {
+        showError.value = true;
+        return;
+      }
+      try {
+        const { data } = await axios.post("/card", {
+          title: create_title.value,
+          user_id: props.user.id,
+          column_id: props.column.id,
+        });
+        props.column.cards.push(data);
+        create_title.value = null;
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    return {
+      create_title,
+      showError,
+      addCards,
+    }
   },
 };
 </script>

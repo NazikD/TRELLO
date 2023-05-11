@@ -35,6 +35,7 @@ class CardController extends Controller
             ->cards()
             ->create([
                 'title' => $request->title,
+                'column_id' => $request->column_id,
                 'user_id' =>$request->user_id,
             ]);
 

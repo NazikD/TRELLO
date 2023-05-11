@@ -25,33 +25,40 @@
 </template>
 
 <script>
+import { ref } from "vue";
+
 export default {
   name: "Modal",
 
-  data() {
-    return {
-      name: null,
-      showError: false,
-    };
+  props:{
+    column: Object,
   },
 
-  methods: {
-    addColumn() {
-      let isValid = true;
-      if (!this.name) {
-        isValid = false;
-        this.showError = true;
+  setup(props, { emit }) {
+    const name = ref(null);
+    const showError = ref(false);
+
+    const addColumn = async () => {
+      if (!name.value) {
+        showError.value = true;
         return;
       }
-      else {
-        axios.post("/column", { title: this.name }).then((res) => {
-          this.name = null;
-          this.showModal = false;
-          this.$emit('close');
-          location.reload();
+      try {
+        const { data } = await axios.post("/column", {
+          title: name.value,
         });
+        // создать что-то, где будет отображатся добавление колонок через push
+        name.value = null;
+        emit('close');
+      } catch (err) {
+        console.error(err);
       }
-    },
+    };
+    return {
+      name,
+      showError,
+      addColumn,
+    };
   },
 };
 </script>
