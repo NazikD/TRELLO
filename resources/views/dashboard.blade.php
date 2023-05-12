@@ -7,14 +7,10 @@
 </head>
 
 <body>
-    {{-- Create-Columns --}}
-    <create-column></create-column>
     {{-- Columns --}}
     <div class="container-fluid d-flex flex-column">
-        <div class="row flex-grow-1 body-column">
-            @foreach ($columns as $column)
-            <column :column="{{ $column }}" :user="{{ $user }}"></column>
-            @endforeach
+        <div>
+            <dashboard :columns="{{ $columns }}" :user="{{ $user }}"></dashboard>
         </div>
     </div>
     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
